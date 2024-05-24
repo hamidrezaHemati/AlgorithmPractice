@@ -17,30 +17,18 @@ exaple: if the edges are stored as below:
 the output of this function is like this: [1,2,0] 
 */
 void sort_edges_based_on_weights(int size, struct Edge *edges){
-	cout<<"sort test: "<<endl;
 	int weights[size];
 	int sorted_indexes[size];
 	for(int i=0; i<size; i++){
 		weights[i] = edges[i].w;
 		sorted_indexes[i] = -100;
 	}
-	cout<<"weights: ";
-	for(int i=0; i<size; i++){
-		cout<<weights[i]<<" ";
-	}
-	cout<<endl;
-	cout<<"indexes: ";
-	for(int i=0; i<size; i++){
-		cout<<sorted_indexes[i]<<" ";
-	}
-	cout<<endl;
 	
 	int min_weight = INT_MAX;
 	int min_index = -1;
 	for(int i=0; i<size; i++){
 		min_weight = INT_MAX;
 		min_index = -1;
-		cout<<"min: "<<min_weight<<" min index: "<<min_index<<endl;
 		for(int j=0; j<size; j++){
 			bool IsFound = false;
 			for (int k=0; k<size; k++) {
@@ -49,7 +37,6 @@ void sort_edges_based_on_weights(int size, struct Edge *edges){
 		            break;     // No need to continue searching, exit the loop
 		        }
 		    }
-		    cout<<"is found? "<<IsFound<<endl;
 			if(!IsFound && (weights[j] < min_weight)){
 				min_weight = weights[j];
 				min_index = j;
