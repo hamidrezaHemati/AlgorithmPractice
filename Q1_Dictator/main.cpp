@@ -7,8 +7,49 @@ struct Edge{
 	int x, y, w;
 };
 
+
+//checks if the graphs is Acycle or contains a cycle. return True of Acycle.
+bool isAcycle(int *selected){
+	return false;
+}
+
+
 /* 
-this function sorts the edges based on their w(weights).
+Finds the next minimum edge in the MST using sorted_indexes and edge weight values.
+*/
+int find_next_edge(int number_of_nodes, int number_of_edges, struct Edge *edges, int *selected, int *sorted_indexes){
+//	for(int i=0; i<number_of_edges; i++){
+//		cout<<sorted_indexes[i]<<" ";
+//	}
+//	cout<<endl;
+//	for(int i=0; i<number_of_nodes-1; i++){
+//		cout<<selected[i]<<" ";
+//	}
+//	cout<<endl;
+	int MST_size = number_of_nodes - 1; 
+	for(int i=0; i<number_of_edges; i++){
+		bool wasSelected = false;
+		for(int j=0; j<MST_size; j++){
+			if(selected[j] == sorted_indexes[i]){
+				wasSelected = true;
+				break;
+			}
+		}
+		if(wasSelected){
+			continue;
+		}
+		else{
+			return sorted_indexes[i];
+		}
+	}
+}
+
+
+ 
+/* 
+Performs the kruskal algorithm on the input and returns the weight. if the output is -1 it means the input is not suitable 
+for creating a MST.
+First this function sorts the edges based on their w(weights).
 output: An array with the index of edges from min to max
 exaple: if the edges are stored as below:
 1 2 96
@@ -16,7 +57,14 @@ exaple: if the edges are stored as below:
 2 3 79
 the output of this function is like this: [1,2,0] 
 */
-int* sort_edges_based_on_weights(int size, struct Edge *edges){
+int kruskal(int number_of_nodes, int number_of_edges, int z, struct Edge *edges){
+	int MST_size = number_of_nodes-1;
+	int selected[MST_size]; //	selected edges. To coprise a MST and avoid creating a cycle there will be number_of_nodes-1 edges in the graph.
+	for(int i=0; i<number_of_nodes-1; i++) selected[i]=-1;
+	selected[0] = z-1;
+	
+	////////////////////////////////////////////// Sorting
+	int size = number_of_edges;
 	int weights[size];
 	int sorted_indexes[size];
 	for(int i=0; i<size; i++){
@@ -44,42 +92,13 @@ int* sort_edges_based_on_weights(int size, struct Edge *edges){
 		sorted_indexes[i] = min_index;
 		}	
 	}
-	
-	for(int i=0; i<size; i++){
-		cout<<sorted_indexes[i]<<" ";
+	////////////////////////////////////// Selecting edges
+	for(int i=0; i<MST_size; i++){
+		int candidate = find_next_edge(number_of_nodes, number_of_edges, edges, selected, sorted_indexes);
+		cout<<candidate<<" ";	
 	}
-	cout<<endl;
-	
-	return sorted_indexes;
-}
-
-//checks if the graphs is Acycle or contains a cycle. return True of Acycle.
-bool isAcycle(int *selected){
-	return false;
-}
-
-// Finds the next minimum edge in the MST
-int find_next_edge(int number_of_nodes, int number_of_edges, struct Edge *edges, int *selected){
-	cout<<*sort_edges_based_on_weights(number_of_edges, edges);
-//	int* sorted_indexes = sort_edges_based_on_weights(number_of_edges, edges);
-//	for(int i=0; i<number_of_edges; i++){
-//		cout<<sorted_indexes[i]<<" ";
-//	}
-}
-
-
-// performs the kruskal algorithm on the input and returns the weight. if the output is -1 it means the input is not suitable 
-//for creating a MST. 
-int kruskal(int number_of_nodes, int number_of_edges, int z, struct Edge *edges){
-	int selected[number_of_nodes-1]; //	selected edges. To coprise a MST and avoid creating a cycle there will be number_of_nodes-1 edges in the graph.
-	for(int i=0; i<number_of_nodes-1; i++) selected[i]=-1;
-	selected[0] = z;
-	find_next_edge(number_of_nodes, number_of_edges, edges, selected);
 	
 	
-//	for(int i=0; i<number_of_edges; i++){
-//		cout<<edges[i].x <<" "<< edges[i].y <<" "<< edges[i].w<<endl;
-//	}
 	return -1;
 }
 
