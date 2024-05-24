@@ -16,7 +16,7 @@ exaple: if the edges are stored as below:
 2 3 79
 the output of this function is like this: [1,2,0] 
 */
-void sort_edges_based_on_weights(int size, struct Edge *edges){
+int* sort_edges_based_on_weights(int size, struct Edge *edges){
 	int weights[size];
 	int sorted_indexes[size];
 	for(int i=0; i<size; i++){
@@ -48,6 +48,9 @@ void sort_edges_based_on_weights(int size, struct Edge *edges){
 	for(int i=0; i<size; i++){
 		cout<<sorted_indexes[i]<<" ";
 	}
+	cout<<endl;
+	
+	return sorted_indexes;
 }
 
 //checks if the graphs is Acycle or contains a cycle. return True of Acycle.
@@ -57,7 +60,11 @@ bool isAcycle(int *selected){
 
 // Finds the next minimum edge in the MST
 int find_next_edge(int number_of_nodes, int number_of_edges, struct Edge *edges, int *selected){
-	sort_edges_based_on_weights(number_of_edges, edges);
+	cout<<*sort_edges_based_on_weights(number_of_edges, edges);
+//	int* sorted_indexes = sort_edges_based_on_weights(number_of_edges, edges);
+//	for(int i=0; i<number_of_edges; i++){
+//		cout<<sorted_indexes[i]<<" ";
+//	}
 }
 
 
