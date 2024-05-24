@@ -6,6 +6,23 @@ struct Edge{
 	int x, y, w;
 };
 
+// searchs between available edges to find the one with minimum weight
+int find_min_weight(struct Edge *edges, int *selected){
+	return -1;	
+} 
+
+//checks if the graphs is Acycle or contains a cycle. return True of Acycle.
+bool isAcycle(int *selected){
+	return false;
+}
+
+// performs the kruskal algorithm on the input and returns the weight. if the output is -1 it means the input is not suitable 
+//for creating a MST. 
+int kruskal(int number_of_nodes, int number_of_edges, struct Edge *edges){
+	int selected[number_of_nodes-1]; //	selected edges. To coprise a MST and avoid creating a cycle there will be number_of_nodes-1 edges in the graph.
+	return -1;
+}
+
 
 int main(int argc, char** argv) {
 	int n, m;
