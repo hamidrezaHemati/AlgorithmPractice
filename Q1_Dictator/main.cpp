@@ -30,39 +30,53 @@ int find_next_edge(int number_of_nodes, int number_of_edges, struct Edge *edges,
 	}
 }
 
-
-int find(int *parents, int v){
-	if(parents[v] == -1){
-		return v;
-	}
-	find(int *parents, find(parents[v]))
+int find(int *parents, int v) {
+    if (parents[v] == -1) {
+        return v;
+    }
+    // Path compression step: set the parent of v to the root
+    parents[v] = find(parents, parents[v]);
+    return parents[v];
 }
 
 
+
+
 // Checks if adding an edge creates a cycle
-bool isAcycle(int *selected, int candidate, struct Edge *edges, int number_of_nodes, int number_of_edges, int *parent, int *rank) {
-	int s = edges[candidate].x;
-	int d = edges[candidate].y;
+bool isAcycle(int *selected, int candidate, struct Edge *edges, int number_of_nodes, int number_of_edges, int *parents, int *ranks) {
+	cout<<"parents"<<endl;
+	for(int i=0; i<number_of_nodes; i++){
+		cout<<parents[i]<<" ";
+	}
+	cout<<"ranks"<<endl;
+	for(int i=0; i<number_of_nodes; i++){
+		cout<<ranks[i]<<" ";
+	}
+	cout<<"in is asycle"<<endl;
+	int s = edges[candidate].x-1;
+	int d = edges[candidate].y-1;
 	int wt = edges[candidate].w;
-	
-	s_parent = find(parents, s);
-	d_parent = find(parents, d);
+	cout<<"candidate: "<<candidate<<" s: "<<s<<" d: "<<d<<" w: "<<wt;
+	int s_parent = find(parents, s);
+	int d_parent = find(parents, d);
+	cout<<s<<" "<<d<<" "<<wt<<endl;
+	cout<<"parent of x: "<<s_parent<<" parent of y: "<<d_parent<<endl;
 	
 	if (s_parent == d_parent){
 		return false;
 	}
 	//RANK
-	if(rank[s] > rank[d])	//s has higher rank
-		parent[d] = s;
-	else if(rank[s] < rank[d])	//d has higher rank
-		parent[s] = d;
+	if(ranks[s] > ranks[d])	//s has higher rank
+		parents[d] = s;
+	else if(ranks[s] < ranks[d])	//d has higher rank
+		parents[s] = d;
 	else
 	{
 		//Both have same rank and so anyone can be made as parent
-		parent[d] = s
-		rank[s] +=1;		//Increase rank of parent
+		parents[d] = s;
+		ranks[s] +=1;		//Increase rank of parent
 	}
-	
+	return true;
 	
 }
 
@@ -125,17 +139,21 @@ int kruskal(int number_of_nodes, int number_of_edges, int z, struct Edge *edges)
 	}
 	cout<<endl;
 	
-	int parent[number_of_nodes];
-    int rank[number_of_nodes];
+	int parents[number_of_nodes];
+    int ranks[number_of_nodes];
     for(int i=0; i<number_of_nodes; i++){
-    	parent[i] = -1;
-    	rank[i] = 0;
+    	parents[i] = -1;
+    	ranks[i] = 0;
 	}
+	int s = edges[selected[0]].x-1;
+	int d = edges[selected[0]].y-1;
+	parents[d] = s;
+	ranks[s] += 1;
 	
 	for(int i=0; i<MST_size; i++){
 		int candidate = find_next_edge(number_of_nodes, number_of_edges, edges, selected, sorted_indexes);
 		cout<<"candidate: "<<candidate<<endl;
-		if(isAcycle(selected, candidate, edges, number_of_nodes, number_of_edges, parent, rank)){
+		if(isAcycle(selected, candidate, edges, number_of_nodes, number_of_edges, parents, ranks)){
 			for(int j=0; j<MST_size; j++){
 				if(selected[j] == -1){
 					selected[j] = candidate;
